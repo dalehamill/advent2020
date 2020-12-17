@@ -7,7 +7,36 @@ fun main(args: Array<String>) {
     }
 
     // PART 1
-    println("Earliest bus calculation: ${earliestBus(input)}")
+    //println("Earliest bus calculation: ${earliestBus(input)}")
+
+    // PART 2
+    println("Earliest timestamp: ${earliestTimestamp(input)}")
+}
+
+fun earliestTimestamp(input: ArrayList<String>): Long {
+    val busses = input[1]
+        .split(',')
+
+    var t = 0L
+    var increment = 0L
+    for (i in busses.indices.reversed()) {
+        if (busses[i] == "x") continue
+        val bus = busses[i].toLong()
+
+        if (increment == 0L) {
+            increment = bus
+            t = bus - i.toLong()
+            continue
+        }
+
+        while ((t + i) % bus != 0L) {
+            t += increment
+        }
+        increment *= bus
+        println("index $i, time $t, increment: $increment")
+    }
+
+    return t
 }
 
 fun earliestBus(input: ArrayList<String>): Long {
@@ -31,3 +60,4 @@ fun earliestBus(input: ArrayList<String>): Long {
 
     return ((((depart / busNumbers[minIndex]) + 1) * busNumbers[minIndex]) - depart) * busNumbers[minIndex]
 }
+
